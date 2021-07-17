@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'COVID-19'),
+      home: MyHomePage(title: 'COVID-19 prueba'),
     );
   }
 }
