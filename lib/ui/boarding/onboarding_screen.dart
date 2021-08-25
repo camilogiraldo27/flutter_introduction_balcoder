@@ -18,14 +18,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       "image": "assets/images/Okeyyy_OnBoarding_01.png"
     },
     {
-      "title": "Pide tu servicio facilmente",
+      "title": "Conecte su Dispositivo fácilmente",
       "text":
-          "Nunca cerramos, así que somos el aliado perfecto y sin restricciones",
+          " Contamos con Servidores en la Nube, \nsomos su aliado perfecto\n y sin restricciones",
       "image": "assets/images/Okeyyy_OnBoarding_02.png"
     },
     {
-      "title": "Almacena tu llave",
-      "text": "Y píde que te llegue dónde quiera que te encuentres",
+      "title": "Almacene su Información médica",
+      "text": " Y píde que le envien una alerta\n a sus familiares o allegados",
       "image": "assets/images/Okeyyy_OnBoarding_03.png"
     },
   ];

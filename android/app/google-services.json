@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "789284343821",
+    "project_id": "flutter-medicalapp",
+    "storage_bucket": "flutter-medicalapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789284343821:android:674cc513427da6f4e14544",
+        "android_client_info": {
+          "package_name": "com.balcoder.flutter_balcoder_medicalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789284343821-ordu24j6oqf7h79rpg60ma3nk2ea8mb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAnTTxR2FHqNQTXPkNHcJr5UYkulXm7v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789284343821-ordu24j6oqf7h79rpg60ma3nk2ea8mb8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "789284343821-d7b9lvv0rhuh430pqe0p3kcq51m38kth.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.balcoder.flutterBalcoderMedicalapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
