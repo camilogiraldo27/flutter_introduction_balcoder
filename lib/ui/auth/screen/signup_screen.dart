@@ -232,7 +232,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                     child: Center(
                       child: SvgPicture.asset(
-                        'assets/images/Okeyyy_auth.svg',
+                        'assets/images/Medicalapp_auth.svg',
                         height: 200,
                       ),
                     ),

@@ -26,7 +26,7 @@ class _AuthScreenState extends State<AuthScreen> {
             Spacer(),
             Center(
               child: SvgPicture.asset(
-                'assets/images/Okeyyy_auth.svg',
+                'assets/images/Medicalapp_auth.svg',
                 height: 186,
               ),
             ),

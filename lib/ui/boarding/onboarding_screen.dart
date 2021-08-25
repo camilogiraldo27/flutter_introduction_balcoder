@@ -15,18 +15,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       "title": "Regístrate",
       "text":
           "Accede a este increíble servicio que puede salvarte en muchos momentos",
-      "image": "assets/images/Okeyyy_OnBoarding_01.png"
+      "image": "assets/images/Medicalapp_OnBoarding_01.png"
     },
     {
       "title": "Conecte su Dispositivo fácilmente",
       "text":
           " Contamos con Servidores en la Nube, \nsomos su aliado perfecto\n y sin restricciones",
-      "image": "assets/images/Okeyyy_OnBoarding_02.png"
+      "image": "assets/images/Medicalapp_OnBoarding_02.png"
     },
     {
       "title": "Almacene su Información médica",
       "text": " Y píde que le envien una alerta\n a sus familiares o allegados",
-      "image": "assets/images/Okeyyy_OnBoarding_03.png"
+      "image": "assets/images/Medicalapp_OnBoarding_03.png"
     },
   ];
 

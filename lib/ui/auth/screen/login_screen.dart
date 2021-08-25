@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                     child: Center(
                       child: SvgPicture.asset(
-                        'assets/images/Okeyyy_auth.svg',
+                        'assets/images/Medicalapp_auth.svg',
                         height: 200,
                       ),
                     ),

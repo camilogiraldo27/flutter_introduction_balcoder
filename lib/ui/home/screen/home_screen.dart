@@ -43,7 +43,7 @@
 //           CircleAvatar(
 //             radius: 30.0,
 //             backgroundImage: AssetImage(
-//               "assets/images/Okeyyy_icon.png",
+//               "assets/images/Medicalapp_icon.png",
 //             ),
 //             backgroundColor: Colors.transparent,
 //           ),
