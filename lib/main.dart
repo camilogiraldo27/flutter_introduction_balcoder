@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_balcoder_medicalapp/ui/auth/service/auth.service.dart';
 import 'package:flutter_balcoder_medicalapp/ui/auth/service/root_service.dart';
+import 'package:flutter_balcoder_medicalapp/ui/blue/custom_blue.dart';
 import 'package:flutter_balcoder_medicalapp/ui/boarding/onboarding_screen.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/root_screen.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_balcoder_medicalapp/utils/constant.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,18 +16,18 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   static const MaterialColor kPrimaryTheme = MaterialColor(
-    0xFF7966ff,
+    0xFF3d6d79,
     <int, Color>{
-      50: Color(0xFF7966ff),
-      100: Color(0xFF7966ff),
-      200: Color(0xFF7966ff),
-      300: Color(0xFF7966ff),
-      400: Color(0xFF7966ff),
-      500: Color(0xFF7966ff),
-      600: Color(0xFF7966ff),
-      700: Color(0xFF7966ff),
-      800: Color(0xFF7966ff),
-      900: Color(0xFF7966ff),
+      50: kPrimaryColor,
+      100: kPrimaryColor,
+      200: kPrimaryColor,
+      300: kPrimaryColor,
+      400: kPrimaryColor,
+      500: kPrimaryColor,
+      600: kPrimaryColor,
+      700: kPrimaryColor,
+      800: kPrimaryColor,
+      900: kPrimaryColor,
     },
   );
 

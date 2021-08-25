@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_balcoder_medicalapp/ui/blue/custom_blue.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_balcoder_medicalapp/ui/auth/model/user_model.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/dialog/add_locker_dialog.dart';
@@ -99,14 +100,7 @@ class _KeyScreenState extends State<KeyScreen> {
                           createdDate: formatter
                               .format(locker.createdDate!.toDate())
                               .toString(),
-                          descriptionKey: 'x' +
-                              (lastKey.keyName != null
-                                      ? locker.keyList!.length
-                                      : locker.keyList!.length - 1)
-                                  .toString() +
-                              ((locker.keyList!.length - 1) == 1
-                                  ? ' Dispositivo'
-                                  : ' Dispositivos'),
+                          descriptionKey: ' ',
                           position: i,
                           onTap: () {
                             print(locker.key);
@@ -207,14 +201,18 @@ class _KeyScreenState extends State<KeyScreen> {
                   descriptionKey: '',
                   position: i + 1,
                   onTap: () {
-                    showDialog(
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (context) => AddLockerDialog(
-                            position: i + 1,
-                            isFromMyKey: true,
-                            lockerModel: new LockerModel(),
-                            userModel: widget.userModel));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const FlutterBlueApp();
+                    }));
+                    // showDialog(
+                    //     barrierDismissible: true,
+                    //     context: context,
+                    //     builder: (context) => AddLockerDialog(
+                    //         position: i + 1,
+                    //         isFromMyKey: true,
+                    //         lockerModel: new LockerModel(),
+                    //         userModel: widget.userModel));
                   }));
 
               children.add(Padding(

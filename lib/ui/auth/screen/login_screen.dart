@@ -277,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                       padding: const EdgeInsets.only(top: 32.0, bottom: 24.0),
                       child: DefaultButton(
-                          color: Color(0xFF7367F0),
+                          color: kPrimaryColor,
                           text: isRememberPassword
                               ? "Restaurar"
                               : "Iniciar sesión",

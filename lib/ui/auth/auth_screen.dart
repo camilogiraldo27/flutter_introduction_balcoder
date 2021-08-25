@@ -64,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
               height: 10,
             ),
             DefaultButton(
-              color: Color(0xFF7367F0),
+              color: kPrimaryColor,
               text: "Iniciar sesión",
               press: () {
                 Navigator.push(
@@ -91,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
               height: 10,
             ),
             DefaultButton(
-              color: Color(0xFF7367F0),
+              color: kPrimaryColor,
               text: "Crear cuenta",
               press: () {
                 Navigator.push(

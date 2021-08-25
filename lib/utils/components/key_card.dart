@@ -46,7 +46,7 @@ class KeyCard extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.only(top: 4.0),
                           child: Icon(
-                            Icons.vpn_key,
+                            Icons.bluetooth,
                             color: kPrimaryColor,
                             size: 32,
                           ),
@@ -80,7 +80,7 @@ class KeyCard extends StatelessWidget {
                         width: 32,
                         child: Center(
                           child: Icon(
-                            Icons.play_arrow,
+                            Icons.read_more_rounded,
                             size: 28,
                             color: kPrimaryLightColor,
                           ),

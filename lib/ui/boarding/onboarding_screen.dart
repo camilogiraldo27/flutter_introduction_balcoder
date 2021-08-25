@@ -66,7 +66,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 Spacer(),
                 DefaultButton(
-                  color: Color(0xFF7367F0),
+                  color: kPrimaryColor,
                   text: currentPage != 2 ? "Siguiente" : "!Vamos!",
                   press: () {
                     controller.animateToPage(controller.page!.toInt() + 1,

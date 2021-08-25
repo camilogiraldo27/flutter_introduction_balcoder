@@ -173,7 +173,7 @@
 		c-0.41,0.569-0.91,1.024-1.5,1.364S151.021,50.164,150.121,50.164z M150.076,43.489c-0.531,0-0.986,0.142-1.365,0.421
 		c-0.381,0.279-0.654,0.659-0.824,1.141h4.318c-0.139-0.511-0.395-0.896-0.764-1.155C151.07,43.625,150.615,43.489,150.076,43.489z"
 		/>
-	<circle fill="#75F9B7" cx="89" cy="153" r="20"/>
+	<circle fill="#d69d66" cx="89" cy="153" r="20"/>
 	<path fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" d="M89,143v20"/>
 	<path fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" d="M99,153H79"/>
 </g>

@@ -353,7 +353,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 32.0, bottom: 24.0),
                     child: DefaultButton(
-                      color: Color(0xFF7367F0),
+                      color: kPrimaryColor,
                       text: "Continuar",
                       press: _validateAndSubmit,
                     ),
