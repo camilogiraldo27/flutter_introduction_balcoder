@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_balcoder_medicalapp/ui/boarding/model/onboard_page_item.dart';
 import 'package:flutter_balcoder_medicalapp/utils/components/fade_animation.dart';
+import 'package:flutter_balcoder_medicalapp/utils/constant.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -77,18 +78,19 @@ class _OnboardState extends State<InAppUpdatePage>
               child: Padding(
                 padding: const EdgeInsets.only(top: 24.0),
                 child: FloatingActionButton(
+                  backgroundColor: kPrimaryColor,
                   child: Icon(
                     Icons.download_rounded,
                     color: Colors.white,
                   ),
                   onPressed: () => setState(() {
                     try {
-                      launch("https://appdistribution.firebase.google.com/pub/i/2d6b75e382ab658c");
+                      launch("https://appdistribution.firebase.google.com/pub/i/4015fd911304e468");
                     } on PlatformException catch (e) {
                       launch(
-                          "https://appdistribution.firebase.google.com/pub/i/2d6b75e382ab658c");
+                          "https://appdistribution.firebase.google.com/pub/i/4015fd911304e468");
                     } finally {
-                      launch("https://appdistribution.firebase.google.com/pub/i/2d6b75e382ab658c");
+                      launch("https://appdistribution.firebase.google.com/pub/i/4015fd911304e468");
                     }
                   }),
                 ),

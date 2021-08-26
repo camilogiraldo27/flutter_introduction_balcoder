@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   PackageInfo? packageInfo;
 
   String? version;
-  bool showInAppUpdater = true;
+  bool showInAppUpdater = false;
 
   getAppInfo() async {
     packageInfo = await PackageInfo.fromPlatform();
