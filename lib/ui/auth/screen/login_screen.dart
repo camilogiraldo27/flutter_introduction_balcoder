@@ -129,8 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         // bottom: 56.0,
                         ),
                     child: Center(
-                      child: SvgPicture.asset(
-                        'assets/images/Medicalapp_auth.svg',
+                      child: Image.asset(
+                        'assets/images/Medicalapp_auth.png',
                         height: 200,
                       ),
                     ),
@@ -291,29 +291,29 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.topCenter,
         ),
       ),
-      // bottomNavigationBar: GestureDetector(
-      //   onTap: () {
-      //     Navigator.pop(context);
-      //     Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //             builder: (_) => SignupScreen(
-      //                   auth: widget.auth,
-      //                   onSignedIn: widget.onSignedIn,
-      //                 )));
-      //   },
-      //   child: Container(
-      //     child: Padding(
-      //       padding: EdgeInsets.only(bottom: 30.0),
-      //       child: SvgPicture.asset(
-      //         "assets/images/login_footer.svg",
-      //         height: 20.0,
-      //         width: 149.0,
-      //         fit: BoxFit.scaleDown,
-      //       ),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => SignupScreen(
+                        auth: widget.auth,
+                        onSignedIn: widget.onSignedIn,
+                      )));
+        },
+        child: Container(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 30.0),
+            child: Image.asset(
+              "assets/images/login_footer.png",
+              height: 20.0,
+              width: 320.0,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+        ),
+      ),
     );
   }
 

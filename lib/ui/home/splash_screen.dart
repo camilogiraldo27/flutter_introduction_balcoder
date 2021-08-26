@@ -55,8 +55,8 @@ class SplashScreenState extends State<SplashScreen>
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(bottom: 30.0),
-                child: SvgPicture.asset(
-                  "assets/images/powered_by_Balcoder.svg",
+                child: Image.asset(
+                  "assets/images/powered_by_Balcoder.png",
                   height: 20.0,
                   width: 149.0,
                   fit: BoxFit.scaleDown,
@@ -67,8 +67,8 @@ class SplashScreenState extends State<SplashScreen>
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new SvgPicture.asset(
-                'assets/images/splash_screen.svg',
+              new Image.asset(
+                'assets/images/splash_screen.png',
                 width: animation.value * 374,
                 height: animation.value * 374,
               ),

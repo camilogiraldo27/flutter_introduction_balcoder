@@ -146,7 +146,7 @@ class _AddLockerDialogState extends State<AddLockerDialog> {
               )
             : Stack(
                 children: [
-                  SvgPicture.asset("assets/images/add_key_dialog.svg"),
+                  Image.asset("assets/images/add_key_dialog.png"),
                   Form(
                     key: _formKey,
                     child: Column(

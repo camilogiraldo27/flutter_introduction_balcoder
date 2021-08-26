@@ -33,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       Spacer(),
                       Center(
-                        child: SvgPicture.asset(
-                          'assets/images/Medicalapp_auth.svg',
+                        child: Image.asset(
+                          'assets/images/Medicalapp_auth.png',
                           height: 200,
                         ),
                       ),

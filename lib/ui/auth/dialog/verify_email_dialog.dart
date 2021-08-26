@@ -27,7 +27,7 @@ class _VerifyEmailDialogState extends State<VerifyEmailDialog> {
           ),
           child: Stack(
             children: [
-              SvgPicture.asset("assets/images/verfy_email.svg"),
+              Image.asset("assets/images/verfy_email.png"),
             ],
           ),
         ),

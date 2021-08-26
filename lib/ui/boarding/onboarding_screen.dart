@@ -45,7 +45,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   onTap: navigationPage,
                   child: Text(
                     'Saltar',
-                    style: TextStyle(fontSize: 18),
+                    style:   TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // light
+                    color: kTextColor),
                   ),
                 ),
               ),
@@ -110,15 +113,24 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       Text(
         splashData[index]["title"]!,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w700, // light
+            color: kPrimaryColor),
       ),
       SizedBox(
         height: 24,
       ),
-      Text(
-        splashData[index]["text"]!,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 18),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          splashData[index]["text"]!,
+          textAlign: TextAlign.center,
+          style:  TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // light
+                    color: kTextColor),
+        ),
       ),
     ]);
   }

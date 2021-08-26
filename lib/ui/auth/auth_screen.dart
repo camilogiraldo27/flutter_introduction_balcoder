@@ -25,8 +25,8 @@ class _AuthScreenState extends State<AuthScreen> {
           children: [
             Spacer(),
             Center(
-              child: SvgPicture.asset(
-                'assets/images/Medicalapp_auth.svg',
+              child: Image.asset(
+                'assets/images/Medicalapp_auth.png',
                 height: 186,
               ),
             ),
@@ -104,15 +104,15 @@ class _AuthScreenState extends State<AuthScreen> {
               },
             ),
             Spacer(),
-            // Padding(
-            //   padding: EdgeInsets.only(bottom: 30.0),
-            //   child: SvgPicture.asset(
-            //     "assets/images/term_cond.svg",
-            //     height: 20.0,
-            //     width: 149.0,
-            //     fit: BoxFit.scaleDown,
-            //   ),
-            // ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 30.0),
+              child: Image.asset(
+                "assets/images/term_cond.png",
+                height: 20.0,
+                width: 200.0,
+                fit: BoxFit.scaleDown,
+              ),
+            ),
           ],
         ),
       ),

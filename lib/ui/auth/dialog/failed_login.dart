@@ -27,7 +27,7 @@ class _FailedLoginDialogState extends State<FailedLoginDialog> {
           ),
           child: Stack(
             children: [
-              SvgPicture.asset("assets/images/failed_login.svg"),
+              Image.asset("assets/images/failed_login.png"),
 
               // Positioned(
               //     height: 79,
