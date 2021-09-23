@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_balcoder_medicalapp/ui/blue/custom_blue.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_balcoder_medicalapp/ui/auth/model/user_model.dart';
-import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/dialog/add_locker_dialog.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/dialog/get_key_dialog.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/key_edit_page.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/model/key_model.dart';
@@ -21,8 +20,8 @@ class KeyScreen extends StatefulWidget {
 }
 
 class _KeyScreenState extends State<KeyScreen> {
-  final lockerCollection =
-      FirebaseFirestore.instance.collection('lockerCollection');
+  final deviceCollection =
+      FirebaseFirestore.instance.collection('deviceCollection');
 
   @override
   void initState() {
@@ -37,14 +36,12 @@ class _KeyScreenState extends State<KeyScreen> {
     return Container(
       color: kbackGroundLight,
       child: StreamBuilder(
-        stream: lockerCollection
+        stream: deviceCollection
             .where("isDeleted", isEqualTo: false)
-            .where("isPayment", isEqualTo: true)
             .where("uid", isEqualTo: widget.userModel.uid)
-            // .orderBy("createdDate", descending: false)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          List<LockerModel> lockerList = [];
+          List<DeviceModel> deviceList = [];
           List<Widget> children = [
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
@@ -78,67 +75,65 @@ class _KeyScreenState extends State<KeyScreen> {
             default:
               final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-              snapshot.data!.docs.forEach((doc) {
-                lockerList.add(
-                    new LockerModel.fromSnapshot(data: doc.data(), id: doc.id));
+              snapshot.data?.docs.forEach((doc) {
+                deviceList.add(
+                    new DeviceModel.fromSnapshot(data: doc.data(), id: doc.id));
               });
 
               var i = 0;
 
               children = children +
-                  lockerList.map<Widget>((locker) {
+                  deviceList.map<Widget>((device) {
                     i++;
-
-                    final lastKey = locker.keyList!.last;
 
                     return Slidable(
                       actionPane: SlidableDrawerActionPane(),
                       actionExtentRatio: 0.25,
                       child: KeyCard(
                           isEmpty: false,
-                          nameKey: "${locker.keyList![0].keyName}",
+                          nameKey: "${device.deviceName}",
                           createdDate: formatter
-                              .format(locker.createdDate!.toDate())
+                              .format(device.createdDate!.toDate())
                               .toString(),
                           descriptionKey: ' ',
                           position: i,
                           onTap: () {
-                            print(locker.key);
+                            print(device.key);
                             showDialog(
                                 barrierDismissible: true,
                                 context: context,
                                 builder: (context) => GetKeyDialog(
                                       userModel: widget.userModel,
-                                      lockerModel: locker,
+                                      deviceModel: device,
                                     ));
                           }),
                       secondaryActions: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 24.0, right: 24, bottom: 4),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black45,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: IconSlideAction(
-                                caption: 'Editar',
-                                color: Colors.transparent,
-                                icon: Icons.more_horiz,
-                                onTap: () async => await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => KeyEditPage(
-                                            position: i,
-                                            userModel: widget.userModel,
-                                            lockerModel: locker))),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //       top: 24.0, right: 24, bottom: 4),
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //       color: Colors.black45,
+                        //       borderRadius:
+                        //           BorderRadius.all(Radius.circular(10.0)),
+                        //     ),
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.all(8.0),
+                        //       child: IconSlideAction(
+                        //         caption: 'Editar',
+                        //         color: Colors.transparent,
+                        //         icon: Icons.more_horiz,
+                        //         onTap: () async => await Navigator.push(
+                        //             context,
+                        //             MaterialPageRoute(
+                        //                 builder: (_) => KeyEditPage(
+                        //                     position: i,
+                        //                     userModel: widget.userModel,
+                        //                     deviceModel: device))),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 24.0, right: 24, bottom: 4),
@@ -168,12 +163,12 @@ class _KeyScreenState extends State<KeyScreen> {
                                       popup.button(
                                         label: 'Eliminar',
                                         onPressed: () async {
-                                          locker.isDeleted = true;
+                                          device.isDeleted = true;
 
                                           await FirebaseFirestore.instance
-                                              .collection('lockerCollection')
-                                              .doc(locker.key)
-                                              .update(locker.toJson())
+                                              .collection('deviceCollection')
+                                              .doc(device.key)
+                                              .update(device.toJson())
                                               .then((result) async {
                                             print("GUARDO key");
 
@@ -194,26 +189,28 @@ class _KeyScreenState extends State<KeyScreen> {
                     );
                   }).toList();
 
-              children.add(KeyCard(
-                  isEmpty: true,
-                  nameKey: '',
-                  createdDate: '',
-                  descriptionKey: '',
-                  position: i + 1,
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const FlutterBlueApp();
+              if (children.length == 1) {
+                children.add(KeyCard(
+                    isEmpty: true,
+                    nameKey: '',
+                    createdDate: '',
+                    descriptionKey: '',
+                    position: i + 1,
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return FlutterBlueApp(userModel: widget.userModel);
+                      }));
+                      // showDialog(
+                      //     barrierDismissible: true,
+                      //     context: context,
+                      //     builder: (context) => AddLockerDialog(
+                      //         position: i + 1,
+                      //         isFromMyKey: true,
+                      //         deviceModel: new DeviceModel(),
+                      //         userModel: widget.userModel));
                     }));
-                    // showDialog(
-                    //     barrierDismissible: true,
-                    //     context: context,
-                    //     builder: (context) => AddLockerDialog(
-                    //         position: i + 1,
-                    //         isFromMyKey: true,
-                    //         lockerModel: new LockerModel(),
-                    //         userModel: widget.userModel));
-                  }));
+              }
 
               children.add(Padding(
                 padding: const EdgeInsets.only(left: 20.0),

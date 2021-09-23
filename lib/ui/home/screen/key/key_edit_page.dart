@@ -11,11 +11,11 @@ class KeyEditPage extends StatefulWidget {
   KeyEditPage(
       {required this.position,
       required this.userModel,
-      required this.lockerModel});
+      required this.deviceModel});
 
   int position;
   UserModel userModel;
-  LockerModel lockerModel;
+  DeviceModel deviceModel;
 
   @override
   _KeyEditPageState createState() => _KeyEditPageState();
@@ -36,25 +36,14 @@ class _KeyEditPageState extends State<KeyEditPage> {
   initState() {
     quantityTotal = 0;
 
-    if (widget.lockerModel.keyList!.length < 5) {
-      widget.lockerModel.keyList!.add(new KeyModel());
-    }
-    final lastKey = widget.lockerModel.keyList!.last;
-
-    if (lastKey.keyName == null) {
-      initKeyQuantity = widget.lockerModel.keyList!.length - 1;
-    } else {
-      initKeyQuantity = widget.lockerModel.keyList!.length;
-    }
-
     super.initState();
   }
 
   saveLocker() async {
     await FirebaseFirestore.instance
         .collection('lockerCollection')
-        .doc(widget.lockerModel.key)
-        .update(widget.lockerModel.toJson())
+        .doc(widget.deviceModel.key)
+        .update(widget.deviceModel.toJson())
         .then((result) async {
       print("GUARDO key");
       Navigator.pop(context);
@@ -113,306 +102,77 @@ class _KeyEditPageState extends State<KeyEditPage> {
                               padding: const EdgeInsets.only(left: 77),
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: widget.lockerModel.keyList!.length,
+                                  itemCount: 1,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
-                                      padding: const EdgeInsets.only(right: 28),
-                                      child: widget.lockerModel.keyList![index]
-                                                  .keyName ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () async {
-                                                widget.lockerModel.isPayment!
-                                                    ? await showDialog(
-                                                        barrierDismissible:
-                                                            true,
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            EditLockerDialog(
-                                                                keyModel: widget
-                                                                        .lockerModel
-                                                                        .keyList![
-                                                                    index]))
-                                                    : await showDialog(
-                                                        barrierDismissible:
-                                                            true,
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            AddLockerDialog(
-                                                                isFromMyKey:
-                                                                    false,
-                                                                lockerModel: widget
-                                                                    .lockerModel,
-                                                                userModel: widget
-                                                                    .userModel));
-
-                                                if (widget
-                                                    .lockerModel.isPayment!) {
-                                                  print(
-                                                      "YA AGREGO PERO EDITANDO");
-                                                  if (widget.lockerModel
-                                                          .keyList!.length <
-                                                      5) {
-                                                    widget.lockerModel.keyList!
-                                                        .add(new KeyModel());
-                                                  }
-                                                }
-                                              },
-                                              child: Container(
-                                                height: 200.0,
-                                                width: 180.0,
-                                                decoration: BoxDecoration(
-                                                    color: kPrimaryGray,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10))),
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 32.0,
-                                                              bottom: 24),
-                                                      child: Container(
-                                                        height: 30.0,
-                                                        width: 140,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10))),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "Agregar Dispositivo",
-                                                            style: TextStyle(
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600, // light
-                                                                color:
-                                                                    kSecondaryColor),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 50.0,
-                                                              bottom: 24),
-                                                      child: Container(
-                                                        height: 40.0,
-                                                        width: 40,
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                kbackGroundDark,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            40))),
-                                                        child: Center(
-                                                          child: Icon(
-                                                            Icons.add,
-                                                            size: 32,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          : GestureDetector(
-                                              onTap: () {
-                                                if (!widget
-                                                    .lockerModel.isPayment!) {
-                                                  if (index > 0 && index < 4) {
-                                                    setState(() {
-                                                      widget
-                                                          .lockerModel.keyList!
-                                                          .removeAt(index);
-                                                    });
-                                                  } else {
-                                                    if (index == 4) {
-                                                      setState(() {
-                                                        widget.lockerModel
-                                                                    .keyList![
-                                                                index] =
-                                                            new KeyModel();
-                                                      });
-                                                    }
-                                                  }
-
-                                                  final lastKey = widget
-                                                      .lockerModel
-                                                      .keyList!
-                                                      .last;
-
-                                                  setState(() {
-                                                    if (widget
-                                                                .lockerModel
-                                                                .keyList!
-                                                                .length ==
-                                                            4 &&
-                                                        lastKey.keyName !=
-                                                            null) {
-                                                      widget
-                                                          .lockerModel.keyList!
-                                                          .add(new KeyModel());
-                                                    }
-                                                  });
-                                                } else {
-                                                  if (initKeyQuantity <=
-                                                      index) {
-                                                    setState(() {
-                                                      widget
-                                                          .lockerModel.keyList!
-                                                          .removeAt(index);
-                                                    });
-                                                  } else {
-                                                    _scaffoldKey.currentState!
-                                                        .showSnackBar(SnackBar(
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      content: Text(
-                                                        "Dispositivos no pueden ser eliminadas.",
+                                        padding:
+                                            const EdgeInsets.only(right: 28),
+                                        child: GestureDetector(
+                                          onTap: () async {},
+                                          child: Container(
+                                            height: 200.0,
+                                            width: 180.0,
+                                            decoration: BoxDecoration(
+                                                color: kPrimaryGray,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 32.0,
+                                                          bottom: 24),
+                                                  child: Container(
+                                                    height: 30.0,
+                                                    width: 140,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10))),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Agregar Dispositivo",
                                                         style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight: FontWeight
+                                                                .w600, // light
                                                             color:
-                                                                Colors.white),
-                                                      ),
-                                                    ));
-                                                  }
-                                                }
-                                              },
-                                              child: Container(
-                                                child: Stack(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      widget.position == 1
-                                                          ? index == 0
-                                                              ? "assets/images/key_25000.svg"
-                                                              : "assets/images/key_5000.svg"
-                                                          : "assets/images/key_5000.svg",
-                                                      height: 200.0,
-                                                      width: 180.0,
-                                                      fit: BoxFit.scaleDown,
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 60.0),
-                                                      child: Container(
-                                                        height: 70.0,
-                                                        width: 180,
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                kPrimaryColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10))),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(12.0),
-                                                            child: Text(
-                                                              widget
-                                                                  .lockerModel
-                                                                  .keyList![
-                                                                      index]
-                                                                  .keyDescription!,
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300, // light
-                                                                  color:
-                                                                      kDialogBackGround),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                                kSecondaryColor),
                                                       ),
                                                     ),
-                                                    Positioned.fill(
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.topCenter,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 35),
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () async {
-                                                              await showDialog(
-                                                                  barrierDismissible:
-                                                                      true,
-                                                                  context:
-                                                                      context,
-                                                                  builder: (context) => EditLockerDialog(
-                                                                      keyModel: widget
-                                                                          .lockerModel
-                                                                          .keyList![index]));
-
-                                                              if (widget
-                                                                  .lockerModel
-                                                                  .isPayment!) {
-                                                                await FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'lockerCollection')
-                                                                    .doc(widget
-                                                                        .lockerModel
-                                                                        .key)
-                                                                    .update(widget
-                                                                        .lockerModel
-                                                                        .toJson())
-                                                                    .then(
-                                                                        (result) async {
-                                                                  print(
-                                                                      "GUARDO key");
-                                                                }).catchError(
-                                                                        (err) =>
-                                                                            print(err));
-                                                              }
-                                                            },
-                                                            child: Text(
-                                                              widget
-                                                                  .lockerModel
-                                                                  .keyList![
-                                                                      index]
-                                                                  .keyName!,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontSize: 17,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600, // light
-                                                                  color:
-                                                                      kTextColor),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 50.0,
+                                                          bottom: 24),
+                                                  child: Container(
+                                                    height: 40.0,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                        color: kbackGroundDark,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    40))),
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 32,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                    );
+                                          ),
+                                        ));
                                   })
                               // child: ListView.builder(
                               //     scrollDirection: Axis.horizontal,
@@ -473,50 +233,6 @@ class _KeyEditPageState extends State<KeyEditPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                if (widget.lockerModel.isPayment!) {
-                                  final lastKey =
-                                      widget.lockerModel.keyList!.last;
-                                  int diffQuantity = 0;
-
-                                  diffQuantity =
-                                      widget.lockerModel.keyList!.length -
-                                          initKeyQuantity;
-
-                                  if (lastKey.keyName == null) {
-                                    diffQuantity = diffQuantity - 1;
-                                  }
-
-                                  print(diffQuantity);
-
-                                  if (diffQuantity == 0) {
-                                    Navigator.of(context).pop();
-                                  } else {
-                                    saveLocker();
-                                  }
-                                } else {
-                                  if (widget.position == 1) {
-                                    final lastKey =
-                                        widget.lockerModel.keyList!.last;
-
-                                    if (lastKey.keyName == null) {
-                                      saveLocker();
-                                    } else {
-                                      saveLocker();
-                                    }
-                                  } else {
-                                    if (widget.lockerModel.keyList!.length ==
-                                        5) {
-                                      final lastKey =
-                                          widget.lockerModel.keyList!.last;
-
-                                      if (lastKey.keyName == null) {
-                                        saveLocker();
-                                      }
-                                    } else {
-                                      saveLocker();
-                                    }
-                                  }
-                                }
                               },
                               child: Container(
                                 width: 120,
@@ -533,21 +249,7 @@ class _KeyEditPageState extends State<KeyEditPage> {
                             Spacer(),
                             GestureDetector(
                               onTap: () async {
-                                widget.lockerModel.isDeleted = true;
-
-                                if (!widget.lockerModel.isPayment!) {
-                                  await FirebaseFirestore.instance
-                                      .collection('lockerCollection')
-                                      .doc(widget.lockerModel.key)
-                                      .update(widget.lockerModel.toJson())
-                                      .then((result) async {
-                                    print("GUARDO key");
-
-                                    Navigator.of(context).pop();
-                                  }).catchError((err) => print(err));
-                                } else {
-                                  Navigator.of(context).pop();
-                                }
+                                widget.deviceModel.isDeleted = true;
                               },
                               child: Container(
                                 width: 120,
@@ -586,12 +288,12 @@ class _KeyEditPageState extends State<KeyEditPage> {
               ),
               new FlatButton(
                 onPressed: () async {
-                  widget.lockerModel.isDeleted = true;
+                  widget.deviceModel.isDeleted = true;
 
                   await FirebaseFirestore.instance
                       .collection('lockerCollection')
-                      .doc(widget.lockerModel.key)
-                      .update(widget.lockerModel.toJson())
+                      .doc(widget.deviceModel.key)
+                      .update(widget.deviceModel.toJson())
                       .then((result) async {
                     print("GUARDO key");
 

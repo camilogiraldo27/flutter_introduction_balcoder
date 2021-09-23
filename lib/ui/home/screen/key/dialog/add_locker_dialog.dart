@@ -10,12 +10,12 @@ class AddLockerDialog extends StatefulWidget {
   AddLockerDialog(
       {this.position,
       required this.userModel,
-      required this.lockerModel,
+      required this.deviceModel,
       required this.isFromMyKey});
 
   int? position;
   UserModel userModel;
-  LockerModel lockerModel;
+  DeviceModel deviceModel;
   bool isFromMyKey;
   @override
   _AddLockerDialogState createState() => _AddLockerDialogState();
@@ -48,27 +48,27 @@ class _AddLockerDialogState extends State<AddLockerDialog> {
         isLoading = true;
       });
 
-      if (widget.lockerModel.key == null) {
+      if (widget.deviceModel.key == null) {
         print(widget.userModel.uid);
-        widget.lockerModel.uid = widget.userModel.uid!;
-        widget.lockerModel.isDeleted = false;
-        widget.lockerModel.isPayment = false;
-        widget.lockerModel.keyList = [];
-        widget.lockerModel.createdDate = Timestamp.now();
+        widget.deviceModel.uid = widget.userModel.uid!;
+        widget.deviceModel.isDeleted = false;
+        widget.deviceModel.deviceName = '';
+        widget.deviceModel.deviceID = '';
+
+        widget.deviceModel.createdDate = Timestamp.now();
 
         keyModel.keyName = keyNameController.text;
         keyModel.keyDescription = keyDescriptionController.text;
         keyModel.createdDate = Timestamp.now();
         keyModel.isDeleted = false;
 
-        widget.lockerModel.keyList!.add(keyModel);
         await FirebaseFirestore.instance
             .collection('lockerCollection')
-            .add(widget.lockerModel.toJson())
+            .add(widget.deviceModel.toJson())
             .then((result) async {
           print(result);
           print("GUARDO key");
-          widget.lockerModel.key = result.id;
+          widget.deviceModel.key = result.id;
 
           Navigator.of(context).pop();
           if (widget.isFromMyKey) {
@@ -81,38 +81,28 @@ class _AddLockerDialogState extends State<AddLockerDialog> {
               //         builder: (_) => PaymentKeyPage(
               //             position: widget.position,
               //             userModel: widget.userModel,
-              //             lockerModel: widget.lockerModel)));
+              //             deviceModel: widget.deviceModel)));
             } else {
               showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (context) => SubscribeDialog(
                         userModel: widget.userModel,
-                        lockerModel: widget.lockerModel,
+                        deviceModel: widget.deviceModel,
                       ));
             }
           }
         }).catchError((err) => print(err));
       } else {
-        widget.lockerModel.keyList!
-            .removeAt(widget.lockerModel.keyList!.length - 1);
-
         keyModel.keyName = keyNameController.text;
         keyModel.keyDescription = keyDescriptionController.text;
         keyModel.createdDate = Timestamp.now();
         keyModel.isDeleted = false;
 
-        setState(() {
-          widget.lockerModel.keyList!.add(keyModel);
-          if (widget.lockerModel.keyList!.length < 5) {
-            widget.lockerModel.keyList!.add(new KeyModel());
-          }
-        });
-
         await FirebaseFirestore.instance
             .collection('lockerCollection')
-            .doc(widget.lockerModel.key)
-            .update(widget.lockerModel.toJson())
+            .doc(widget.deviceModel.key)
+            .update(widget.deviceModel.toJson())
             .then((result) async {
           print("GUARDO key");
 

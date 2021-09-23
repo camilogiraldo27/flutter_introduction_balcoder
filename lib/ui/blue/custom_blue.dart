@@ -5,33 +5,44 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_balcoder_medicalapp/ui/auth/model/user_model.dart';
 import 'package:flutter_balcoder_medicalapp/ui/blue/widgets.dart';
+import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/model/key_model.dart';
+import 'package:flutter_balcoder_medicalapp/utils/constant.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
+  FlutterBlueApp({Key? key, required this.userModel}) : super(key: key);
+  UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      color: Colors.lightBlue,
       home: StreamBuilder<BluetoothState>(
           stream: FlutterBlue.instance.state,
           initialData: BluetoothState.unknown,
           builder: (c, snapshot) {
             final state = snapshot.data;
             if (state == BluetoothState.on) {
-              return FindDevicesScreen();
+              return FindDevicesScreen(
+                userModel: userModel,
+              );
             }
-            return BluetoothOffScreen(state: state);
+            return BluetoothOffScreen(
+              state: state,
+              userModel: userModel,
+            );
           }),
     );
   }
 }
 
 class BluetoothOffScreen extends StatelessWidget {
-  const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
+  BluetoothOffScreen({Key? key, this.state, required this.userModel})
+      : super(key: key);
+  UserModel userModel;
 
   final BluetoothState? state;
 
@@ -62,12 +73,49 @@ class BluetoothOffScreen extends StatelessWidget {
   }
 }
 
-class FindDevicesScreen extends StatelessWidget {
+class FindDevicesScreen extends StatefulWidget {
+  FindDevicesScreen({Key? key, required this.userModel});
+  UserModel userModel;
+
+  @override
+  State<FindDevicesScreen> createState() => _FindDevicesScreenState();
+}
+
+class _FindDevicesScreenState extends State<FindDevicesScreen> {
+  List<DeviceModel> deviceList = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FlutterBlue.instance.startScan(timeout: Duration(seconds: 4));
+
+    getDevicesFirebase();
+  }
+
+  getDevicesFirebase() async {
+    await FirebaseFirestore.instance
+        .collection('deviceCollection')
+        .where('isDeleted', isEqualTo: false)
+        .snapshots()
+        .listen((event) {
+      deviceList = [];
+
+      event.docs.forEach((doc) {
+        setState(() {
+          deviceList
+              .add(new DeviceModel.fromSnapshot(data: doc.data(), id: doc.id));
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        backgroundColor: kPrimaryColor,
+        title: Text('Dispositivos'),
       ),
       body: RefreshIndicator(
         onRefresh: () =>
@@ -80,71 +128,96 @@ class FindDevicesScreen extends StatelessWidget {
                     .asyncMap((_) => FlutterBlue.instance.connectedDevices),
                 initialData: [],
                 builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map((d) => ListTile(
-                            title: Text(d.name),
-                            subtitle: Text(d.id.toString()),
-                            trailing: StreamBuilder<BluetoothDeviceState>(
-                              stream: d.state,
-                              initialData: BluetoothDeviceState.disconnected,
-                              builder: (c, snapshot) {
-                                if (snapshot.data ==
-                                    BluetoothDeviceState.connected) {
-                                  return RaisedButton(
-                                    child: Text('OPEN'),
-                                    onPressed: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DeviceScreen(device: d))),
-                                  );
-                                }
-                                return Text(snapshot.data.toString());
-                              },
-                            ),
-                          ))
-                      .toList(),
+                  children: snapshot.data!.map((d) {
+                    return ListTile(
+                      title: Text(d.name),
+                      subtitle: Text(d.id.toString()),
+                      trailing: StreamBuilder<BluetoothDeviceState>(
+                        stream: d.state,
+                        initialData: BluetoothDeviceState.disconnected,
+                        builder: (c, snapshot) {
+                          if (snapshot.data == BluetoothDeviceState.connected) {
+                            return RaisedButton(
+                              child: Text('OPEN'),
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DeviceScreen(device: d))),
+                            );
+                          }
+                          return Text(snapshot.data.toString());
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBlue.instance.scanResults,
                 initialData: [],
                 builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map(
-                        (r) => ScanResultTile(
-                          result: r,
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            r.device.connect();
-                            return DeviceScreen(device: r.device);
-                          })),
-                        ),
-                      )
-                      .toList(),
+                  children: snapshot.data!.map((r) {
+                    bool showDevice = true;
+                    print(r.device);
+
+                    for (var device in deviceList) {
+                      print(device.deviceID);
+                      if (device.deviceID.toString() ==
+                          r.device.id.toString()) {
+                        showDevice = false;
+                      }
+                    }
+                    print(showDevice);
+
+                    return showDevice
+                        ? ScanResultTile(
+                            result: r,
+                            onTap: () {
+                              print(r.device);
+
+                              FirebaseFirestore.instance
+                                  .collection("deviceCollection")
+                                  .doc(r.device.id.toString())
+                                  .set({
+                                "deviceID": r.device.id.toString(),
+                                "deviceName": r.device.name.toString(),
+                                "createdDate": Timestamp.now(),
+                                "isDeleted": false,
+                                "uid": widget.userModel.uid
+                              }).then((value) {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  r.device.connect();
+                                  return DeviceScreen(device: r.device);
+                                }));
+                              });
+                            })
+                        : Container();
+                  }).toList(),
                 ),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: StreamBuilder<bool>(
-        stream: FlutterBlue.instance.isScanning,
-        initialData: false,
-        builder: (c, snapshot) {
-          if (snapshot.data!) {
-            return FloatingActionButton(
-              child: Icon(Icons.stop),
-              onPressed: () => FlutterBlue.instance.stopScan(),
-              backgroundColor: Colors.red,
-            );
-          } else {
-            return FloatingActionButton(
-                child: Icon(Icons.search),
-                onPressed: () => FlutterBlue.instance
-                    .startScan(timeout: Duration(seconds: 4)));
-          }
-        },
-      ),
+      // floatingActionButton: StreamBuilder<bool>(
+      //   stream: FlutterBlue.instance.isScanning,
+      //   initialData: false,
+      //   builder: (c, snapshot) {
+      //     if (snapshot.data!) {
+      //       return FloatingActionButton(
+      //         child: Icon(Icons.stop),
+      //         onPressed: () => FlutterBlue.instance.stopScan(),
+      //         backgroundColor: Colors.red,
+      //       );
+      //     } else {
+      //       return FloatingActionButton(
+      //           child: Icon(Icons.search),
+      //           onPressed: () => FlutterBlue.instance
+      //               .startScan(timeout: Duration(seconds: 4)));
+      //     }
+      //   },
+      // ),
     );
   }
 }
@@ -214,11 +287,11 @@ class DeviceScreen extends StatelessWidget {
               switch (snapshot.data) {
                 case BluetoothDeviceState.connected:
                   onPressed = () => device.disconnect();
-                  text = 'DISCONNECT';
+                  text = 'Desconectar';
                   break;
                 case BluetoothDeviceState.disconnected:
                   onPressed = () => device.connect();
-                  text = 'CONNECT';
+                  text = 'Conectar';
                   break;
                 default:
                   onPressed = null;
@@ -242,40 +315,41 @@ class DeviceScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             StreamBuilder<BluetoothDeviceState>(
-              stream: device.state,
-              initialData: BluetoothDeviceState.connecting,
-              builder: (c, snapshot) => ListTile(
-                leading: (snapshot.data == BluetoothDeviceState.connected)
-                    ? Icon(Icons.bluetooth_connected)
-                    : Icon(Icons.bluetooth_disabled),
-                title: Text(
-                    'Device is ${snapshot.data.toString().split('.')[1]}.'),
-                subtitle: Text('${device.id}'),
-                trailing: StreamBuilder<bool>(
-                  stream: device.isDiscoveringServices,
-                  initialData: false,
-                  builder: (c, snapshot) => IndexedStack(
-                    index: snapshot.data! ? 1 : 0,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: () => device.discoverServices(),
-                      ),
-                      IconButton(
-                        icon: SizedBox(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.grey),
+                stream: device.state,
+                initialData: BluetoothDeviceState.connecting,
+                builder: (c, snapshot) {
+                  return ListTile(
+                    leading: (snapshot.data == BluetoothDeviceState.connected)
+                        ? Icon(Icons.bluetooth_connected)
+                        : Icon(Icons.bluetooth_disabled),
+                    title: Text(
+                        'Device is ${snapshot.data.toString().split('.')[1]}.'),
+                    subtitle: Text('${device.id}'),
+                    trailing: StreamBuilder<bool>(
+                      stream: device.isDiscoveringServices,
+                      initialData: false,
+                      builder: (c, snapshot) => IndexedStack(
+                        index: snapshot.data! ? 1 : 0,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: () => device.discoverServices(),
                           ),
-                          width: 18.0,
-                          height: 18.0,
-                        ),
-                        onPressed: null,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                          IconButton(
+                            icon: SizedBox(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation(Colors.grey),
+                              ),
+                              width: 18.0,
+                              height: 18.0,
+                            ),
+                            onPressed: null,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }),
             StreamBuilder<int>(
               stream: device.mtu,
               initialData: 0,

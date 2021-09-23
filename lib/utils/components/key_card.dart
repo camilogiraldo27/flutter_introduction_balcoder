@@ -100,14 +100,14 @@ class KeyCard extends StatelessWidget {
                         ? Center(
                             child: RichText(
                               text: TextSpan(
-                                  text: 'Sin Conexión    ',
+                                  text: 'Agregar    ',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600, // light
                                       color: kTextColor),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: 'Agregar un Dispositivo.',
+                                      text: 'Nuevo Dispositivo.',
                                       style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w600, // light

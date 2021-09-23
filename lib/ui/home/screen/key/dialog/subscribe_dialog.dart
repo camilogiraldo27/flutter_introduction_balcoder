@@ -6,10 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class SubscribeDialog extends StatefulWidget {
-  SubscribeDialog({required this.userModel, required this.lockerModel});
+  SubscribeDialog({required this.userModel, required this.deviceModel});
 
   UserModel userModel;
-  LockerModel lockerModel;
+  DeviceModel deviceModel;
   @override
   _SubscribeDialogState createState() => _SubscribeDialogState();
 }
@@ -84,7 +84,7 @@ class _SubscribeDialogState extends State<SubscribeDialog> {
                               //     MaterialPageRoute(
                               //         builder: (_) => PaymentKeyPage(
                               //             userModel: widget.userModel,
-                              //             lockerModel: widget.lockerModel)));
+                              //             deviceModel: widget.deviceModel)));
                               Navigator.of(context).pop();
                             },
                             child: Container(

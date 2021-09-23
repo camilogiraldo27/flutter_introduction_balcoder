@@ -6,10 +6,10 @@ import 'package:flutter_balcoder_medicalapp/utils/constant.dart';
 import 'package:intl/intl.dart';
 
 class GetKeyDialog extends StatefulWidget {
-  GetKeyDialog({required this.userModel, required this.lockerModel});
+  GetKeyDialog({required this.userModel, required this.deviceModel});
 
   UserModel userModel;
-  LockerModel lockerModel;
+  DeviceModel deviceModel;
   @override
   _GetKeyDialogState createState() => _GetKeyDialogState();
 }
@@ -28,7 +28,7 @@ class _GetKeyDialogState extends State<GetKeyDialog> {
 
     keyDescriptionController.text = "";
     print(widget.userModel.uid);
-    print(widget.lockerModel.key);
+    print(widget.deviceModel.key);
   }
 
   Future<void> validateAndSave() async {
@@ -41,7 +41,7 @@ class _GetKeyDialogState extends State<GetKeyDialog> {
       });
 
       // TripModel _tripModel = new TripModel();
-      // _tripModel.lockerModel = widget.lockerModel;
+      // _tripModel.deviceModel = widget.deviceModel;
       // _tripModel.isNew = true;
       // _tripModel.status = 'inTracking';
       // _tripModel.observation = keyDescriptionController.text.toString();
@@ -101,7 +101,7 @@ class _GetKeyDialogState extends State<GetKeyDialog> {
                         //       padding:
                         //           const EdgeInsets.only(top: 18.0, left: 25.0),
                         //       child: Text(
-                        //         widget.lockerModel.keyList[0].keyName,
+                        //         widget.deviceModel.keyList[0].keyName,
                         //         textAlign: TextAlign.center,
                         //         style: TextStyle(
                         //             fontSize: 17,
@@ -119,7 +119,7 @@ class _GetKeyDialogState extends State<GetKeyDialog> {
                         //       child: Text(
                         //         'Agregada el ' +
                         //             formatter
-                        //                 .format(widget.lockerModel.createdDate
+                        //                 .format(widget.deviceModel.createdDate
                         //                     .toDate())
                         //                 .toString() +
                         //             ' \n',

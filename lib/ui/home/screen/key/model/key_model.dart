@@ -1,74 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LockerModel {
+class DeviceModel {
   String? key;
   String? uid;
   bool? isDeleted;
-  bool? isPayment;
-  List<KeyModel>? keyList;
+  String? deviceID;
+  String? deviceName;
   Timestamp? createdDate;
 
-  LockerModel(
+  DeviceModel(
       {this.key,
       this.uid,
-      this.isPayment,
-      this.keyList,
+      this.deviceID,
+      this.deviceName,
       this.createdDate,
       this.isDeleted});
 
-  factory LockerModel.fromSnapshot({data, id}) {
-    List<KeyModel>? aux;
-
-    if (aux == null) {
-      aux = [];
-    }
-    data['keyList']
-        .forEach((element) => aux!.add(new KeyModel.fromJson(element)));
-
-    return LockerModel(
+  factory DeviceModel.fromSnapshot({data, id}) {
+    return DeviceModel(
       key: id,
       uid: data["uid"],
-      isPayment: data["isPayment"],
+      deviceID: data["deviceID"],
+      deviceName: data["deviceName"],
       isDeleted: data["isDeleted"],
       createdDate: data["createdDate"],
-      keyList: aux,
     );
   }
 
-  LockerModel.fromJson(dynamic obj) {
-    List<KeyModel>? aux;
-
-    if (aux == null) {
-      aux = [];
-    }
-
-    print(obj);
-
-    obj['keyList']
-        .forEach((element) => aux!.add(new KeyModel.fromJson(element)));
-
+  DeviceModel.fromJson(dynamic obj) {
     this.key = obj['key'];
     this.uid = obj['uid'];
-    this.isPayment = obj['isPayment'];
+    this.deviceID = obj['deviceID'];
+    this.deviceName = obj['deviceName'];
     this.isDeleted = obj['isDeleted'];
     this.createdDate = obj['createdDate'];
-    this.keyList = aux;
   }
 
   toJson() {
-    List? aux;
-
-    if (aux == null) {
-      aux = [];
-    }
-
-    keyList!.forEach((element) => aux!.add(element.toJson()));
-
     return {
       "uid": uid,
-      "keyList": aux,
       "isDeleted": isDeleted,
-      "isPayment": isPayment,
+      "deviceID": deviceID,
+      "deviceName": deviceName,
       "createdDate": createdDate,
     };
   }
