@@ -133,7 +133,7 @@ class ServiceTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Service'),
+            Text('Servicio'),
             Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
                 style: Theme.of(context).textTheme.body1?.copyWith(
                     color: Theme.of(context).textTheme.caption?.color))
@@ -143,7 +143,7 @@ class ServiceTile extends StatelessWidget {
       );
     } else {
       return ListTile(
-        title: Text('Service'),
+        title: Text('Servicio'),
         subtitle:
             Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}'),
       );
@@ -193,18 +193,18 @@ class CharacteristicTile extends StatelessWidget {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.file_download,
-                  color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
-                ),
-                onPressed: onReadPressed,
-              ),
-              IconButton(
-                icon: Icon(Icons.file_upload,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
-                onPressed: onWritePressed,
-              ),
+              // IconButton(
+              //   icon: Icon(
+              //     Icons.file_download,
+              //     color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
+              //   ),
+              //   onPressed: onReadPressed,
+              // ),
+              // IconButton(
+              //   icon: Icon(Icons.file_upload,
+              //       color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
+              //   onPressed: onWritePressed,
+              // ),
               IconButton(
                 icon: Icon(
                     characteristic.isNotifying
@@ -215,7 +215,7 @@ class CharacteristicTile extends StatelessWidget {
               )
             ],
           ),
-          children: descriptorTiles,
+          // children: descriptorTiles,
         );
       },
     );
@@ -288,7 +288,7 @@ class AdapterStateTile extends StatelessWidget {
       color: Colors.redAccent,
       child: ListTile(
         title: Text(
-          'Bluetooth adapter is ${state.toString().substring(15)}',
+          'Bluetooth is ${state.toString().substring(15)}',
           style: Theme.of(context).primaryTextTheme.subhead,
         ),
         trailing: Icon(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_balcoder_medicalapp/ui/blue/custom_blue.dart';
+import 'package:flutter_balcoder_medicalapp/ui/home/screen/chart/homePage.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_balcoder_medicalapp/ui/auth/model/user_model.dart';
 import 'package:flutter_balcoder_medicalapp/ui/home/screen/key/dialog/get_key_dialog.dart';
@@ -48,7 +49,7 @@ class _KeyScreenState extends State<KeyScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
                 child: Text(
-                  'Mis Dispositivos',
+                  'Mi Dispositivo',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontSize: 15,
@@ -99,13 +100,18 @@ class _KeyScreenState extends State<KeyScreen> {
                           position: i,
                           onTap: () {
                             print(device.key);
-                            showDialog(
-                                barrierDismissible: true,
-                                context: context,
-                                builder: (context) => GetKeyDialog(
-                                      userModel: widget.userModel,
-                                      deviceModel: device,
-                                    ));
+                            // showDialog(
+                            //     barrierDismissible: true,
+                            //     context: context,
+                            //     builder: (context) => GetKeyDialog(
+                            //           userModel: widget.userModel,
+                            //           deviceModel: device,
+                            //         ));
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return FlutterBlueApp(
+                                  userModel: widget.userModel);
+                            }));
                           }),
                       secondaryActions: <Widget>[
                         // Padding(
@@ -212,28 +218,30 @@ class _KeyScreenState extends State<KeyScreen> {
                     }));
               }
 
-              children.add(Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 24.0),
-                  child: Text(
-                    'Dashboard',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600, // light
-                        color: kTextColor),
-                  ),
-                ),
-              ));
+              // children.add(Padding(
+              //   padding: const EdgeInsets.only(left: 20.0),
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 24.0),
+              //     child: Text(
+              //       'Dashboard',
+              //       textAlign: TextAlign.left,
+              //       style: TextStyle(
+              //           fontSize: 15,
+              //           fontWeight: FontWeight.w600, // light
+              //           color: kTextColor),
+              //     ),
+              //   ),
+              // ));
 
               children.add(Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
                 child: Padding(
                     padding: const EdgeInsets.only(top: 24.0),
                     child: Container(
-                      height: 240,
-                      color: Colors.grey,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      height: 320,
+                      child: HomePage(),
                     )),
               ));
 

@@ -18,22 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 
 0x180f -> Battery level
 
-Generic ATTribute Profile
-
-(GATT Database)
-
-With BLE, all of the interaction between devices happens through the GATT database. The database is comprised of Services and Characteristics. Services just act as groups of related characteristics. Characteristics can be read and written to, and manipulated (depending on the permissions you give).
-
-Service
-Characteristic
-Service
-Characteristic
-Characteristic
-All functions are divided up into services and characteristics. Each service and characteristic has its own UUID. Standard services and characteristics have their own predefined 16-bit UUID's. These can be found in the GATT Specifications. Vendor specific services and characteristics (like what we will use) use uniquely generated 128-bit UUID's (I used the CLI uuidgen program to make mine).
-
-Heart Rate Monitor Example (Hypothetical)
-
-Key: UUID, [value], (Human Readable Description)
 
 0x1800, (Generic Access Service)
 0x2A00, "MyHeart Monitor", (Device Name)
